@@ -1,6 +1,7 @@
 from tkinter import Tk
 from get_student_name import get_student_name
 from student import StudentDataDict
+from ui.menu import alert
 from ui.questions import ask_questions_ui
 
 def add_grade(students: StudentDataDict, parent: Tk) -> None:
@@ -28,3 +29,5 @@ def add_grade(students: StudentDataDict, parent: Tk) -> None:
 
     students[name]["assignments"].append(assignment_grade)
     students[name]["tests"].append(test_grade)
+    
+    alert("Success", f"Grades added for student '{name}'.")

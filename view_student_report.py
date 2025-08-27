@@ -13,6 +13,9 @@ def view_student_report(students: StudentDataDict, parent: Tk) -> None:
         revert_if_not_found=True,
         parent=parent
     )
+    
+    if not name:
+        return
 
     data = students[name]
     assignments = data["assignments"]
