@@ -1,13 +1,14 @@
 from tkinter import Tk
-from student import StudentDataDict
-from ui.menu import alert
+from database import add_student_db
+from ui.menu import alert, error_alert
 from get_student_name import get_student_name
 
-def add_student(students: StudentDataDict, parent: Tk) -> None:
+from sqlite3 import Connection
+
+def add_student(conn: Connection, parent: Tk) -> None:
     """Add a new student to the system"""
 
     name = get_student_name(
-        students=students,
         title="Add New Student",
         revert_if_found=True,
         parent=parent
@@ -16,5 +17,8 @@ def add_student(students: StudentDataDict, parent: Tk) -> None:
     if not name:
         return
 
-    students[name] = {"assignments": [], "tests": []}
-    alert("Success", f"Student '{name}' added successfully!")
+    roll_number = add_student_db(conn, name)
+    if roll_number:
+        alert("Success", f"Student '{name}' added successfully with Roll Number: {roll_number}.")
+    else:
+        error_alert("Error", f"Failed to add student.")

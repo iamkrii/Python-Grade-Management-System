@@ -1,6 +1,5 @@
 import sys
 from tkinter import Tk
-from student import StudentDataDict
 
 from add_student import add_student
 from add_grade import add_grade
@@ -9,13 +8,18 @@ from view_all_students import view_all_students
 from remove_student import remove_student
 from ui.menu import display_menu_ui
 
-# Dictionary to store all student data
-# Structure: {student_name: {"assignments": [grades], "tests": [grades]}}
-students: StudentDataDict = {}
+from database import initialize_database
 
 def main() -> None:
     """Main function that runs the program"""
     print("Welcome to the Student Grade Management System!")
+
+    # Initialize the database
+    conn = initialize_database()
+
+    if conn is None:
+        print("Failed to initialize database.")
+        sys.exit(1)
 
     menu_actions = {
         1: add_student,
@@ -27,14 +31,18 @@ def main() -> None:
 
     def handle_choice(choice: int, root: Tk):
         if choice == 6:
+            conn.close()
             root.quit()
             root.destroy()
-            sys.exit(0) 
+            sys.exit(0)
 
         action = menu_actions.get(choice)
         if action:
-            # root.withdraw()  # ✅ Hide menu while action runs
-            action(students, root)
+            action(conn, root)
+
+    def on_window_close():
+        conn.close()
+        sys.exit(0)
             # root.deiconify()  # ✅ Show menu again
             
     display_menu_ui(handle_choice)

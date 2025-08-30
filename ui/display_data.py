@@ -2,35 +2,6 @@ import tkinter as tk
 from typing import List
 
 def display_text_window(title: str, parent: tk.Tk, lines: List[str]):
-    """
-    Display a list of strings in a simple scrollable text window.
-
-    Args:
-        title: Window title
-        lines: List of strings to display (each string is a line)
-
-    Example:
-        lines = [
-            "📋 All Students Summary",
-            "=" * 60,
-            "Name            Assignments  Tests    Average  Grade",
-            "-" * 60,
-    Args:
-        title: Window title
-        lines: List of strings to display (each string is a line)
-    
-    Example:
-        lines = [
-            "📋 All Students Summary",
-            "=" * 60,
-            "Name            Assignments  Tests    Average  Grade",
-            "-" * 60,
-            "John Doe        4            2        87.5     B",
-            "Jane Smith      3            3        91.2     A"
-        ]
-        display_text_window("Student Report", lines)
-    """
-    
     # Create window
     # root = tk.Tk()
     root = tk.Toplevel(parent)

@@ -42,3 +42,7 @@ def alert(title: str, message: str):
 def yesno_alert(title: str, message: str) -> bool:
     """Display a yes/no message box."""
     return messagebox.askyesno(title, message)
+
+def error_alert(title: str, message: str):
+    """Display an error message box."""
+    messagebox.showerror(title, message)

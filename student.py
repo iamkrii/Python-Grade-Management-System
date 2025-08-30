@@ -1,6 +1,12 @@
-from typing import Dict, List
+from typing import Literal
 
-StudentDataDict = Dict[str, Dict[str, List[float]]]
+from typing import Tuple
+
+StudentTuple = Tuple[int, str]
+
+AssessmentType = Literal['TEST', 'ASSIGNMENT']
+
+StudentWithMarks = Tuple[int, str, AssessmentType, int]
 
 # Constants for grade weighting
 ASSIGNMENT_WEIGHT = 0.4

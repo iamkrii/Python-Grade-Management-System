@@ -1,23 +1,21 @@
+from sqlite3 import Connection
 from tkinter import Tk
-from student import StudentDataDict
-from ui.menu import alert, yesno_alert
-from get_student_name import get_student_name
+from database import remove_student_db
+from get_student_by_roll_no import get_student_by_roll_no
+from ui.menu import alert, error_alert, yesno_alert
 
-def remove_student(students: StudentDataDict, parent: Tk) -> None:
+def remove_student(conn: Connection, parent: Tk) -> None:
     """Remove a student from the system"""
-    name = get_student_name(
-        students=students,
-        title="Remove Student",
-        revert_if_no_students=True,
-        revert_if_not_found=True,
-        parent=parent
-    )
-    
-    if not name:
+    student = get_student_by_roll_no(conn, parent)
+
+    if not student:
         return
 
-    if yesno_alert("Remove Student", f"Are you sure you want to remove '{name}'?"):
-        del students[name]
-        alert("Success", f"✅ Student '{name}' removed successfully!")
+    if yesno_alert("Remove Student", f"Are you sure you want to remove '{student[1]}'?"):
+        err = remove_student_db(conn, student[0])
+        if err:
+            error_alert("Error", err)
+        else:
+            alert("Success", f"✅ Student '{student[1]}' removed successfully!")
     else:
         return
