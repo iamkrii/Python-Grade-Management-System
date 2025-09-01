@@ -2,7 +2,7 @@ from sqlite3 import Connection
 from tkinter import Tk
 from database import get_all_students_db, get_total_students_count_db
 from calculate import calculate_overall, get_letter_grade
-from ui.display_data import display_text_window
+from ui.display_data import display_tabular_window
 from ui.menu import error_alert
 
 def view_all_students(conn: Connection, parent: Tk) -> None:
@@ -13,12 +13,16 @@ def view_all_students(conn: Connection, parent: Tk) -> None:
         error_alert("Error", "No students found.")
         return
 
-    data_to_display = [
-        "📋 All Students Summary",
-        "=" * 70,
-        f"{'Name':<15} {'Roll No.':<10} {'Assignments':<12} {'Tests':<8} {'Average':<8} {'Grade':<5}",
-        "-" * 70
+    headers = [
+        'Name',
+        'Roll No.',
+        'Assignments',
+        'Tests',
+        'Average',
+        'Grade'
     ]
+    
+    data_to_display = []
     
     data = get_all_students_db(conn)
 
@@ -39,6 +43,13 @@ def view_all_students(conn: Connection, parent: Tk) -> None:
     for roll_number, data in students.items():
         overall_avg = calculate_overall(data["assignments"], data["tests"])
         letter = get_letter_grade(overall_avg)
-        data_to_display.append(f"{data['name']:<15} {roll_number:<10} {len(data['assignments']):<12} {len(data['tests']):<8} {overall_avg:<8.1f} {letter:<5}")
+        data_to_display.append([
+            data['name'],
+            roll_number,
+            len(data['assignments']),
+            len(data['tests']),
+            overall_avg,
+            letter
+        ])
 
-    display_text_window("All Students Summary", parent, data_to_display)
+    display_tabular_window("All Students Summary", parent, headers, data_to_display, info_text=f"Total Students: {count}")

@@ -44,8 +44,8 @@ def main() -> None:
         conn.close()
         sys.exit(0)
             # root.deiconify()  # ✅ Show menu again
-            
-    display_menu_ui(handle_choice)
+
+    display_menu_ui(handle_choice, on_window_close)
 
 
 
